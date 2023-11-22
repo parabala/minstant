@@ -156,3 +156,14 @@ fn tsc() -> u64 {
 
     unsafe { _rdtsc() }
 }
+
+/// Check TSC clock source availability and update if it changed from available to unavailable
+#[inline]
+pub(crate) unsafe fn check_tsc() {
+    if *TSC_STATE.is_tsc_available.get() {
+        if !is_tsc_stable() {
+            *TSC_STATE.is_tsc_available.get() = false;
+        }
+    }
+    return;
+}

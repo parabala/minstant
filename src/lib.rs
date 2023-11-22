@@ -58,6 +58,16 @@ pub fn is_tsc_available() -> bool {
         false
     }
 }
+/// update
+#[inline]
+pub fn check_tsc_available() {
+    #[cfg(all(target_os = "linux", any(target_arch = "x86", target_arch = "x86_64")))]
+    {
+        unsafe {
+            tsc_now::check_tsc();
+        }
+    }
+}
 
 #[inline]
 pub(crate) fn current_cycle() -> u64 {
